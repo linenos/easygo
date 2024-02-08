@@ -76,11 +76,11 @@ func MapToByte(smap interface{}, args ...string) []byte {
 	prefix := ""
 	indent := "    "
 
-	if IndexExists(args, 0) {
+	if value := IndexExists(args, 0); value != nil {
 		prefix = args[0]
 	}
 
-	if IndexExists(args, 1) {
+	if value := IndexExists(args, 1); value != nil {
 		indent = args[1]
 	}
 
