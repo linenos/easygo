@@ -456,6 +456,16 @@ func (f File) Delete(filepath string) bool {
 	return true
 }
 
+func (f File) ReadFileToString(filename string) (string, error) {
+    // Read the entire file
+    content, err := ioutil.ReadFile(filename)
+    if err != nil {
+        return "", err
+    }
+    // Convert content to string and return
+    return string(content), nil
+}
+
 func (f File) Exists(filePath string) bool {
 	info, err := os.Stat(filePath)
 	if err == nil {
