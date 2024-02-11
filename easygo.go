@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"strings"
 
 	"io/ioutil"
 	"net/http"
@@ -33,7 +34,9 @@ func Bun(...any) { // Pass any variable to bypass the 'variable not used' or 'yo
 	return
 }
 
-var TypeOf = reflect.TypeOf // get the typeof something
+func TypeOf(i any) string {
+	return strings.Replace(ToString(reflect.TypeOf(i)), " ", "", -1)
+}
 
 func IndexExists(slice []string, index int) any { // Check if index exist within a []string
   if (index >= 0 && index < len(slice)) {
