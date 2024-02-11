@@ -448,6 +448,50 @@ func (h Http) Get(url string, headers *map[string]string, body ...map[string]int
 	return string(responseBody), response.StatusCode, nil
 }
 
+func (h Http) Post(url string, headers *map[string]string, body ...map[string]interface{}) (string, int, error) {
+	// Convert body to JSON if provided
+	var bodyBytes []byte
+	if len(body) > 0 {
+		var err error
+		bodyBytes, err = json.Marshal(body[0])
+		if err != nil {
+			return "", 404, err
+		}
+	}
+
+	// Create a new HTTP client
+	client := &http.Client{}
+
+	// Create a new request
+	request, err := http.NewRequest("POST", url, bytes.NewBuffer(bodyBytes))
+	if err != nil {
+		return "", 404, err
+	}
+
+	// Set custom headers if provided
+	if headers != nil {
+		for key, value := range *headers {
+			request.Header.Set(key, value)
+		}
+	}
+
+	// Send the request
+	response, err := client.Do(request)
+	if err != nil {
+		return "", 404, err
+	}
+	defer response.Body.Close()
+
+	// Read the response body
+	responseBody, err := ioutil.ReadAll(response.Body)
+	if err != nil {
+		return "", 404, err
+	}
+
+	// Convert response body to string and return
+	return string(responseBody), response.StatusCode, nil
+}
+
 func (f File) Delete(filepath string) bool {
 	err := os.Remove(filepath)
 	if err != nil {
