@@ -24,6 +24,8 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"os/exec"
+	"time"
+	 mrand "math/rand"
 	"path"
 )
 
@@ -43,6 +45,27 @@ func IndexExists(slice []string, index int) any { // Check if index exist within
     return slice[index]
   }
   return nil
+}
+
+func genRandString(length int, useChars, useSymbols, useNumbers bool) string {
+	var characters string
+	if useChars {
+		characters += "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+	}
+	if useSymbols {
+		characters += "!@#$%^&*()-_=+,.?"
+	}
+	if useNumbers {
+		characters += "0123456789"
+	}
+
+	mrand.Seed(time.Now().UnixNano())
+
+	result := make([]byte, length)
+	for i := 0; i < length; i++ {
+		result[i] = characters[mrand.Intn(len(characters))]
+	}
+	return string(result)
 }
 
 func GenerateUniqueFileName(dir, baseName, ext string, deleteExisting bool) string { // Loops through directory and checks for a free file name, how it works: "${baseName}.${ext}" | "testname1.exe"
