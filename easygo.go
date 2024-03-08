@@ -212,6 +212,27 @@ func Encrypt(key []byte, text string) string {
 	return base64.StdEncoding.EncodeToString(ciphertext)
 }
 
+// conditions
+func WaitForCondition(condition func() interface{}, timeout time.Duration) interface{} {
+	ticker := time.NewTicker(10 * time.Millisecond)
+	defer ticker.Stop()
+
+	timeoutTimer := time.NewTimer(timeout)
+	defer timeoutTimer.Stop()
+
+	for {
+		select {
+		case <-ticker.C:
+			result := condition()
+			if result != nil && result != false {
+				return result
+			}
+		case <-timeoutTimer.C:
+			return nil
+		}
+	}
+}
+
 // decrypt from base64 to decrypted string
 func KeyDecrypt(keyStr string, cryptoText string) (string, error) {
 	keyBytes := sha256.Sum256([]byte(keyStr))
