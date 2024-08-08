@@ -1,4 +1,3 @@
-// Created by Linen#3485
 // Go made easier
 package easygo
 
@@ -11,7 +10,6 @@ import (
 	"os"
 	"strings"
 
-	"io/ioutil"
 	"net/http"
 	"reflect"
 	"runtime"
@@ -29,7 +27,7 @@ import (
 	"path"
 )
 
-var Credits string = "Linen#3485 on Discord"
+var owner string = "reallinens on discord"
 
 // Functions ->
 func Bun(...any) { // Pass any variable to bypass the 'variable not used' or 'you must use this variable' error
@@ -47,7 +45,7 @@ func IndexExists(slice []string, index int) any { // Check if index exist within
   return nil
 }
 
-func genRandString(length int, useChars, useSymbols, useNumbers bool) string {
+func GenRandString(length int, useChars, useSymbols, useNumbers bool) string {
 	var characters string
 	if useChars {
 		characters += "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -491,7 +489,7 @@ func (h Http) Get(url string, headers *map[string]string, body ...map[string]int
 	defer response.Body.Close()
 
 	// Read the response body
-	responseBody, err := ioutil.ReadAll(response.Body)
+	responseBody, err := io.ReadAll(response.Body)
 	if err != nil {
 		return "", 404, err
 	}
@@ -535,7 +533,7 @@ func (h Http) Post(url string, headers *map[string]string, body ...map[string]in
 	defer response.Body.Close()
 
 	// Read the response body
-	responseBody, err := ioutil.ReadAll(response.Body)
+	responseBody, err := io.ReadAll(response.Body)
 	if err != nil {
 		return "", 404, err
 	}
@@ -554,7 +552,7 @@ func (f File) Delete(filepath string) bool {
 
 func (f File) ReadFileToString(filename string) (string, error) {
     // Read the entire file
-    content, err := ioutil.ReadFile(filename)
+    content, err := os.ReadFile(filename)
     if err != nil {
         return "", err
     }
